@@ -26,22 +26,16 @@ def get_password_leaks_count(hashes, hash_to_check):
             return count
     return 0 
 
-#
-def get_passwords(file_path):
-    try:
-        with open(file_path, "r") as file:
-            passwords = [line.strip() for line in file]
-
-        for password in passwords:
+#Takes input from the command line as the password to be checked
+def main(args):
+        for password in args:
             count = pwned_api_check(password)
             if count:
-                print(f"{password} was found {count} times....seems a bit risky.")
+                print(f"{password} was found {count} times, seems a bit risky.")
             else:
                 print(f"{password} was not found. All good Chief!")
-    except FileNotFoundError:
-        print(f"There is an error with {file_path}, please check the path again.")
+        
     
 
 if __name__ == '__main__':
-    get_passwords(sys.argv[1])
-    sys.exit(1)
+    sys.exit(main(sys.argv[1:]))
